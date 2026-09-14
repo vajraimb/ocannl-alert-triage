@@ -44,8 +44,8 @@ Suggested rules of thumb while mining:
 
 The synthetic set uses headline only. Real alerts also carry a snippet; appending it helps the
 `soft-mention` class most (the location / résumé context is usually in the snippet, not the
-title). Keep it short: the model truncates to `--seq-len` characters (default 32), so raise that
-to 64–96 when including snippets, and expect training to slow down roughly linearly.
+title). Keep it short: the model truncates to `--seq-len` characters (default 96), so raise that
+further when including long snippets, and expect training to slow down roughly linearly.
 
 Normalisation the tokenizer already does: ASCII case-folding. It does *not* strip HTML entities
 or collapse whitespace, so do that during export.

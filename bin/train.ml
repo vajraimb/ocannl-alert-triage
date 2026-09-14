@@ -50,7 +50,7 @@ let parse_args () =
       data = "data/alerts.jsonl";
       epochs = 40;
       batch_size = 16;
-      seq_len = 32;
+      seq_len = 96;
       d_model = 32;
       num_heads = 4;
       d_ff = 64;
@@ -73,7 +73,7 @@ let parse_args () =
         "N examples per step (default 16)" );
       ( "--seq-len",
         Stdlib.Arg.Int (fun i -> o.seq_len <- i),
-        "N characters per headline (default 32)" );
+        "N characters per headline (default 96)" );
       ("--d-model", Stdlib.Arg.Int (fun i -> o.d_model <- i), "N embedding width (default 32)");
       ("--heads", Stdlib.Arg.Int (fun i -> o.num_heads <- i), "N attention heads (default 4)");
       ("--d-ff", Stdlib.Arg.Int (fun i -> o.d_ff <- i), "N feed-forward hidden width (default 64)");
