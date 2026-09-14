@@ -21,7 +21,7 @@ requirement: everything runs on the CPU `cc` backend in a few seconds.
 ```
 dune-project, alert_triage.opam(.template)  package definition; pins OCANNL 1.0.1
 ocannl_config          OCANNL runtime config (backend=cc, single precision, fixed init seed)
-data/alerts.jsonl      145 synthetic alert headlines (~35 per class, 7 brands) + 48 real ones (Sep 2026)
+data/alerts.jsonl      145 synthetic alert headlines (~35 per class, 7 brands) + 88 real ones (Sep 2026)
 lib/label.ml           the four classes <-> class ids
 lib/dataset.ml         JSONL loading, UTF-8 code-point tokenizer, stratified split
 lib/tensors.ml         host arrays -> OCANNL data tensors, argmax / softmax helpers
@@ -70,25 +70,25 @@ A default run on a 4-core CPU takes about 15 seconds end to end (C compilation o
 included) and prints:
 
 ```
-Loaded 193 examples from data/alerts.jsonl: 144 train (9 batches of 16), 49 holdout, vocab 826 chars
-  train  : keep=42 spam=37 soft-mention=35 dupe=30
-  holdout: keep=19 spam=10 soft-mention=12 dupe=8
-Model: d_model=32 heads=4 d_ff=64 layers=1 seq_len=96 -> 38020 trainable parameters
+Loaded 233 examples from data/alerts.jsonl: 176 train (11 batches of 16), 57 holdout, vocab 964 chars
+  train  : keep=54 spam=42 soft-mention=48 dupe=32
+  holdout: keep=19 spam=13 soft-mention=14 dupe=11
+Model: d_model=32 heads=4 d_ff=64 layers=1 seq_len=96 -> 42436 trainable parameters
 
-Training for 40 epochs (360 steps, adam, peak lr 0.002)...
-epoch   1  train loss 1.4216  holdout acc 22.4%  (0s)
-epoch   5  train loss 0.9363  holdout acc 38.8%  (1s)
-epoch  10  train loss 0.1041  holdout acc 53.1%  (3s)
-epoch  20  train loss 0.0063  holdout acc 51.0%  (6s)
-epoch  40  train loss 0.0032  holdout acc 51.0%  (11s)
+Training for 40 epochs (440 steps, adam, peak lr 0.002)...
+epoch   1  train loss 1.3874  holdout acc 31.6%  (0s)
+epoch   5  train loss 0.9192  holdout acc 63.2%  (2s)
+epoch  10  train loss 0.0925  holdout acc 64.9%  (4s)
+epoch  20  train loss 0.0047  holdout acc 61.4%  (7s)
+epoch  40  train loss 0.0024  holdout acc 61.4%  (15s)
 
-Holdout accuracy: 51.0% (49 examples; chance = 25.0%)
+Holdout accuracy: 61.4% (57 examples; chance = 25.0%)
 Confusion matrix (rows = truth, columns = predicted):
                        keep         spam soft-mention         dupe
-          keep            9            0            3            7
-          spam            1            8            0            1
-  soft-mention            4            0            6            2
-          dupe            6            0            0            2
+          keep           10            1            3            5
+          spam            0           12            1            0
+  soft-mention            2            0           11            1
+          dupe            6            1            2            2
 ```
 
 The split is stratified and seeded (`--seed`); 20% of each class is held out and the training set is
@@ -111,19 +111,19 @@ data. From the run above:
 ```
 Predictions:
   dupe           银泰百货宁波店改造完成重新开业
-                 keep=0.00 spam=0.00 soft-mention=0.06 dupe=0.93
-  dupe           中远海运控股公布三季度净利润同比增长
-                 keep=0.02 spam=0.00 soft-mention=0.06 dupe=0.92
+                 keep=0.00 spam=0.01 soft-mention=0.16 dupe=0.83
+  keep           中远海运控股公布三季度净利润同比增长
+                 keep=0.99 spam=0.00 soft-mention=0.00 dupe=0.00
   spam           银泰国际娱乐城注册送888彩金 六合彩开奖
                  keep=0.00 spam=1.00 soft-mention=0.00 dupe=0.00
   spam           安永 时时彩 幸运飞艇 开户送礼金
                  keep=0.00 spam=1.00 soft-mention=0.00 dupe=0.00
-  dupe           简历模板：曾任安永审计助理
-                 keep=0.00 spam=0.00 soft-mention=0.50 dupe=0.50
+  soft-mention   简历模板：曾任安永审计助理
+                 keep=0.00 spam=0.00 soft-mention=0.95 dupe=0.05
   soft-mention   宁波银泰城附近新开网红奶茶店
-                 keep=0.00 spam=0.00 soft-mention=0.96 dupe=0.04
+                 keep=0.00 spam=0.00 soft-mention=0.99 dupe=0.01
   keep           上海家化拟以自有资金回购公司股份
-                 keep=1.00 spam=0.00 soft-mention=0.00 dupe=0.00
+                 keep=0.83 spam=0.00 soft-mention=0.00 dupe=0.17
 ```
 
 `spam` is easy (the vocabulary of gambling sites is disjoint); `keep` vs `dupe` is the hard pair
@@ -218,7 +218,7 @@ real de-duplication labels (and pairing the headline with the story it duplicate
 style of Chinese Google Alert headlines for 上海家化, 安永, 东方希望, 日照钢铁, 美特斯邦威, 银泰百货 and 中远海运.
 `spam` items are gambling/SEO false matches (银泰国际娱乐, 六合彩, `jnh*.com`), `soft-mention`
 items use the brand as a location, résumé line or campus-recruiting roundup, and every `dupe` is a
-reworded `keep` headline. The last 48 lines (`"source": "gmail-2026-09*"`) are real alert headlines
+reworded `keep` headline. The last 88 lines (`"source": "gmail-2026-09*"`) are real alert headlines
 from Sep 2026 with human labels; note that real spam is often formal PR copy or a name collision
 rather than gambling vocabulary. `scripts/export_labels.md` explains how to add more labels mined
 from a real digest log.
