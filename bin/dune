@@ -1,0 +1,7 @@
+(executable
+ (name train)
+ (public_name train)
+ (package alert_triage)
+ (libraries base stdio unix alert_triage neural_nets_lib)
+ (preprocess
+  (pps ppx_here neural_nets_lib.ppx_ocannl)))

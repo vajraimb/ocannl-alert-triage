@@ -1,0 +1,5 @@
+(library
+ (name alert_triage)
+ (libraries base stdio yojson neural_nets_lib)
+ (preprocess
+  (pps ppx_here neural_nets_lib.ppx_ocannl)))

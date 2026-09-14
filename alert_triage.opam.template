@@ -1,0 +1,6 @@
+# neural_nets_lib 1.0.1 is not yet published to opam-repository (which stops at 0.6.1), so pin the
+# release tag. opam reads pin-depends automatically for `opam install --deps-only .`.
+pin-depends: [
+  ["arrayjit.1.0.1" "git+https://github.com/ahrefs/ocannl.git#1.0.1"]
+  ["neural_nets_lib.1.0.1" "git+https://github.com/ahrefs/ocannl.git#1.0.1"]
+]

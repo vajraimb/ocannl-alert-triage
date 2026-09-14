@@ -1,0 +1,14 @@
+# OCANNL runtime configuration for this project (read by walking up from the current directory).
+# See https://github.com/ahrefs/ocannl/blob/1.0.1/ocannl_config.reference for every key.
+suppress_welcome_message=true
+log_config_sourcing=false
+# CPU backend: compiles the training step to C and loads it via a shared object. No GPU needed.
+backend=cc
+log_level=0
+default_prec=single
+print_decimals_precision=3
+# Deterministic parameter initialization; the training entrypoint also sets this from --seed.
+fixed_state_for_init=42
+clean_up_build_files_on_startup=false
+clean_up_log_files_on_startup=false
+output_debug_files_in_build_directory=false
